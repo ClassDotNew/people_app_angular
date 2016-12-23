@@ -3,9 +3,11 @@
 <div ng-app="app">
   <div ng-controller="peopleCtrl">
   <p>There are ({{people.length}}) people</p>
+  <p>There are ({{available}}) people that can be seen</p>
     <div ng-repeat="person in people">
       <h3 ng-click="toggleBio(person)">{{person.name}}</h3>
       <p ng-class="{strike: !person.bioVisible}">{{person.bio}}</p>
+      <p>{{person.bioVisible}}</p>
       <button ng-click="removeHuman($index)">Remove this person permanently</button>
     </div>
     <input ng-model="name">

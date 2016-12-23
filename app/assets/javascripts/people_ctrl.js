@@ -12,18 +12,33 @@
       {
         name: "Nary",
         bio: "has a namb",
-        bioVisible: false
+        bioVisible: true
       },
       {
         name: "Gary",
         bio: "has a gamb",
-        bioVisible: false
+        bioVisible: true
       }
     ]
+
+    //  check how many people in the array have biovisible to be true
+    $scope.available = 0;
+    for(var i = 0; i < $scope.people.length; i++){
+      if ($scope.people[i].bioVisible === true) {
+        $scope.available++;
+      }
+    }
 
     $scope.toggleBio = function(person) {
       // if their bioVisible is true, make it false, and vice versa
       person.bioVisible = !person.bioVisible;
+      $scope.available = 0;
+      for(var i = 0; i < $scope.people.length; i++){
+        if ($scope.people[i].bioVisible === true) {
+          $scope.available++;
+        }
+      }
+
     }
 
     $scope.showBio = function(inputPerson){
@@ -45,6 +60,8 @@
       }
 
       $scope.people.push(objectThing);
+      $scope.name = "";
+      $scope.bio = "";
     }
 
     $scope.removeHuman = function(someIndex){

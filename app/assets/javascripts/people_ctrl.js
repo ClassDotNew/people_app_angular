@@ -1,33 +1,22 @@
 (function() {
   "use strict";
 
-  angular.module("app").controller("peopleCtrl", function($scope){
+  angular.module("app").controller("peopleCtrl", function($scope, $http){
 
-    $scope.people = [
-      {
-        name: "Mary",
-        bio: "has a lamb",
-        bioVisible: true
-      },
-      {
-        name: "Nary",
-        bio: "has a namb",
-        bioVisible: true
-      },
-      {
-        name: "Gary",
-        bio: "has a gamb",
-        bioVisible: true
-      }
-    ]
-
-    //  check how many people in the array have biovisible to be true
-    $scope.available = 0;
-    for(var i = 0; i < $scope.people.length; i++){
-      if ($scope.people[i].bioVisible === true) {
-        $scope.available++;
-      }
+    $scope.setup = function(){
+      console.log('hello');
+      $http.get("/api/v1/people").then(function(response){
+        console.log(response.data);
+        $scope.people = response.data;
+      });
     }
+    //  check how many people in the array have biovisible to be true
+    // $scope.available = 0;
+    // for(var i = 0; i < $scope.people.length; i++){
+    //   if ($scope.people[i].bioVisible === true) {
+    //     $scope.available++;
+    //   }
+    // }
 
     $scope.toggleBio = function(person) {
       // if their bioVisible is true, make it false, and vice versa
@@ -51,17 +40,19 @@
     }
 
     $scope.addPerson = function(inputName, inputBio) {
-      // make a new object
-      // add that object to the array people
       var objectThing = {
         name: inputName,
-        bio: inputBio,
-        bioVisible: true
+        bio: inputBio
       }
+      // add them to the db
+      $http.post('/api/v1/people', objectThing).then(function(response){
+        console.log(response);
+        var newItem = response.data
+        $scope.people.push(response.data);
+        $scope.name = "";
+        $scope.bio = "";
+      })
 
-      $scope.people.push(objectThing);
-      $scope.name = "";
-      $scope.bio = "";
     }
 
     $scope.removeHuman = function(someIndex){

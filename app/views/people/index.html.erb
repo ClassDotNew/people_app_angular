@@ -4,11 +4,29 @@
   <div ng-controller="peopleCtrl" ng-init="setup()">
   <p>There are ({{people.length}}) people</p>
   <p>There are ({{available}}) people that can be seen</p>
-    <div ng-repeat="person in people">
+  <p>Type in your search name here <input ng-model="inputName"> </p>
+  <p>Type in your search bio here <input ng-model="inputBio"> </p>
+  <button ng-click="getOrderedAttribute('name')">Order by Name</button>
+  <button ng-click="getOrderedAttribute('bio')">Order by Bio</button>
+    <table style="width:100%" border=1>
+      <tr>
+        <th ng-click="getOrderedAttribute('name')">Name {{nameSorter}}</th>
+        <th ng-click="getOrderedAttribute('bio')">Bio {{bioSorter}}</th>
+      </tr>
+      <tr ng-repeat="person in people | filter: {name: inputName} | filter: {bio: inputBio} | orderBy: inputAttributeOrder:reverse">
+        <td>{{person.name}}</td>
+        <td>{{person.bio}}</td>
+      </tr>
+    </table>
+
+    <div ng-repeat="person in people | filter: {name: inputName} | filter: {bio: inputBio} | orderBy: inputAttributeOrder:reverse">
       <h3 ng-click="toggleBio(person)">{{person.name}}</h3>
       {{person.bio}}</p>
 
-      <button ng-click="removeHuman($index)">Remove this person permanently</button>
+      <button ng-click="removeHuman(person)">Remove this person permanently</button>
+    </div>
+    <div ng-repeat="error in errors">
+      {{error}}
     </div>
     <input ng-model="name">
     <input ng-model="bio">
